@@ -1,3 +1,4 @@
+//공통 자바스크립트
 $(function(){
   $("li[data-url]").click(function() {
             event.stopPropagation();
