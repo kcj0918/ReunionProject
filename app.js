@@ -4,7 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var passport = require('./join/passport');
+var session = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/user/users');
 var home = require('./routes/home/home');
@@ -25,6 +26,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+/*passport*/
+app.use(session({
+    secret: 'keyborad cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+         maxAge : 3600000
+    }}));
+app.use(passport.initialize()); // Express 연결
+app.use(passport.session()); // 로그인 세션 유지
+
 
 app.use('/',routes);
 app.use('/home', home);
