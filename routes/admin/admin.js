@@ -8,6 +8,9 @@ router.get('/request', function(req, res, next) {
 router.get('/send', function(req, res, next) {
   res.render('admin/send');
 });
+router.get('/guide', function(req, res, next) {
+  res.render('admin/guide');
+});
 
 
 
