@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var passport = require('./join/passport');
+var passport = require('./join/passport'); /* passport 모듈을을 불러옴 */
 var session = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/user/users');
@@ -26,13 +26,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-/*passport*/
+/* session을 유지 하기위해 express-session 설정 */
 app.use(session({
     secret: 'keyborad cat',
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: false,
+        secure: false, // 기본적으로 https보안을 위해 cookie이용을 못하게 함 이부분을 false로 해줘야 session 유지
          maxAge : 3600000
     }}));
 app.use(passport.initialize()); // Express 연결

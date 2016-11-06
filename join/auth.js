@@ -1,13 +1,31 @@
+/**
+ * 접근 권한 및 db 연결 설정을 위한 auth생성
+ * <pre>
+ * input : none
+ * output : none
+ * Table : none
+ * </pre>
+ *
+ * <pre>
+ * <b>History:</b>
+ *    김만기, 1.0, 2016.11.04 초기작성
+ * </pre>
+ *
+ * @author 김만기
+ * @version 1.0, 2016.11.06 주석 추가
+ * @see    None
+ */
 var mysql=require('mysql');
-var connection=require('./connection');
+var connection=require('./connection'); // 생성 했던 dbPool을 가져온다
 
+/*이 부분은 모바일을 위해 만든 Outh2.0 관련 부분인데 아직은  알 필요 없다 */
 var jwt = require('jsonwebtoken');
 var compose = require('composable-middleware');
 var SECRET = 'token_secret';
 var EXPIRES = 60; // 1 hour
 var validateJwt = require('express-jwt')({secret: SECRET});
 
-
+/*해당 비밀 번호의 User 정보를 가져오는 부분*/
 function UserAuth(login_id,callback){
   connection.query("SELECT id,login_id,password FROM user where login_id=?",login_id,function(err, row){
 
