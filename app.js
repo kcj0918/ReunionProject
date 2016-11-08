@@ -12,6 +12,7 @@ var home = require('./routes/home/home');
 var guide = require('./routes/guide/guide');
 var main = require('./routes/main/main');
 var admin =require('./routes/admin/admin');
+var board = require('./routes/board/board');
 
 var app = express();
 
@@ -45,6 +46,7 @@ app.use('/users', users);
 app.use('/guide',guide);
 app.use('/main',main);
 app.use('/admin',admin);
+app.use('/board',board);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
