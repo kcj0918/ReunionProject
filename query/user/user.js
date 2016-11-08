@@ -34,5 +34,21 @@ user.FindOne = function(id,callback){
 
 };
 
+//첫번째 로그인인지 아닌지 알아내는 함수 (생년월일과 현재 비밀번호 비교)
+user.firstLogin = function(id,callback){
+    pool.getConnection(function(err,connection){
+        connection.query("select password,birth from user where id=?",[id],function(err, row){
+            connection.release();
+            //현재 비밀번호가 생일과 같을 경우 즉, 비밀번호를 변경하지 않은 경우
+            if(row[0].password == row[0].birth){
+                callback("false");
+            }else {
+                //비밀번호를 변경 한 경우
+                callback("true");
+            }
+        });
+    });
+}
+
 
 module.exports = user;
