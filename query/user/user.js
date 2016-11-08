@@ -17,16 +17,22 @@
  */
 
 var mysql=require('mysql');
-var connection=require('../../join/connection');
+var pool=require('../../join/connection');
 
 var user={};
 
 user.FindOne = function(id,callback){
-  connection.query("select * from user where id=?",[id],function(err, row){
-     /* query의 결과가 배열 형태로 오게 되는데
-     결과가 1개 일 경우는 [0]을 붙여 주어야 받을 때 undefined 문제가 안생긴다*/
-      callback(row[0]);
-  });
+ pool.getConnection(function(err,connection){
+   connection.query("select * from user where id=?",[id],function(err, row){
+      /* query의 결과가 배열 형태로 오게 되는데
+      결과가 1개 일 경우는 [0]을 붙여 주어야 받을 때 undefined 문제가 안생긴다*/
+
+       callback(row[0]);
+       connection.release();
+   });
+ });
+
 };
+
 
 module.exports = user;

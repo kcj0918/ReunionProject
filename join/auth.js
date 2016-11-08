@@ -16,7 +16,7 @@
  * @see    None
  */
 var mysql=require('mysql');
-var connection=require('./connection'); // 생성 했던 dbPool을 가져온다
+var pool=require('./connection'); // 생성 했던 dbPool을 가져온다
 
 /*이 부분은 모바일을 위해 만든 Outh2.0 관련 부분인데 아직은  알 필요 없다 */
 var jwt = require('jsonwebtoken');
@@ -27,13 +27,17 @@ var validateJwt = require('express-jwt')({secret: SECRET});
 
 /*해당 비밀 번호의 User 정보를 가져오는 부분*/
 function UserAuth(login_id,callback){
-  connection.query("SELECT id,login_id,password FROM user where login_id=?",login_id,function(err, row){
+  pool.getConnection(function(err,connection){
+    connection.query("SELECT id,login_id,password FROM user where login_id=?",login_id,function(err, row){
 
 
-    callback(row[0]);
+      callback(row[0]);
+      connection.release();
 
-
+    });
   });
+
+
 }
 
 /*Angular2 이용시 토큰 사용*/
