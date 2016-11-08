@@ -6,18 +6,13 @@ var passport = require('../../join/passport');
 router.get('/', function (req, res, next) {
     res.render('home/main');
 });
+//get 으로 로그인 페이지에 들어온경우
 router.get('/login/:category', function (req, res, next) {
-    //TODO: 여기에 에러메시지 띄우게 하기
-    console.error("로그인 get flash is "+ req.flash('error'));
-    res.render('home/login');
+    //에러가 있으면 message 로  에러를 보내준다.
+    res.render('home/login',{message:req.flash('error')});
 });
-/* POST action으로 들어온 인증처리를 /login에서 하도록 하고 passport.authenticate를 ‘local’ strategy로 호출한다.*/
-// router.post('/login/:category', passport.authenticate('local', {
-//     successRedirect: '/main', // 로그인 성공 Redirect URL
-//     failureRedirect: '/home' // 로그인 실패 Redirect URL
-// }));
 
-//로그인 폼을 눌렀을때 불리는 함수
+/* POST action으로 들어온 인증처리를 /login에서 하도록 하고 passport.authenticate를 ‘local’로 한다. 내부 함수에서 에러가 있는 경우 다시 로그인 화면으로 redirect 한다*/
 router.post('/login/:category', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
 
@@ -31,9 +26,11 @@ router.post('/login/:category', function (req, res, next) {
         }
         req.logIn(user, function (err) {
             if (err) {
-                return next(err);
+                return res.redirect(req.params.category);
             }
-            //로그인이 정상적으로 완료 된 경우 
+            //로그인이 정상적으로 완료 된 경우
+
+            //TODO: 첫번째 로그인인경우
             return res.redirect('/main/');
         });
     })(req, res, next);
