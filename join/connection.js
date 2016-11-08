@@ -21,8 +21,8 @@ var mysql = require('mysql'); // mysql 모듈을 불러오고
 /*database 연결을 위한 Pool생성 여기서 Pool이란 db 연결 정보를 뜻한다*/
 var pool = mysql.createPool({
   host:'localhost',
-  user:'root',
-  password:'dlaudtnr0',
+  user:'dev2',
+  password:'test123',
   database:'skhuDB'
 });
 

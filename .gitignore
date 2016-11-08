@@ -26,3 +26,9 @@ build/Release
 # https://docs.npmjs.com/cli/shrinkwrap#caveats
 # Debug log from npm
 npm-debug.log
+
+#db 정보
+connection.js
+
+#내꺼 메모
+준구할일

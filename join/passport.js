@@ -28,11 +28,12 @@ passport.use(new LocalStrategy({
   /*해당 data를 form으로 부터 정상적으로 받았다면  db에서 User를 조회한다*/
     auth.UserAuth(login_id,function(user){
       if(!user){
-          return done(null, false);
+
+          return done(null,false,req.flash('error','ID가 존재하지 않습니다.'));
       }
       if(user.password !== password){
-        /*done메소드의 두번째 parameter가 false이면 로그인 실패를 의미하고 err 메시지를 띄운다*/
-          return done(null, false);
+        /*done메소드의 두번째 parameter가 false이면 로그인 실패를 의미하고 세번째 파라미터는 session 에 에러 메시지를 저장한다.*/
+          return done(null,false,req.flash('error','패스워드 틀렸습니다.'));
       }
       /*done(null,user)는 LocalStrategy의 기능이고  serializeUser에 parameter로 user객체를 넘긴다*/
       return done(null, user);
