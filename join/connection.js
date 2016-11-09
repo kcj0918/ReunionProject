@@ -22,7 +22,7 @@ var mysql = require('mysql'); // mysql 모듈을 불러오고
 var pool = mysql.createPool({
   host:'localhost',
   user:'root',
-  password:'####',
+  password:'1111',
   database:'skhudb'
 });
 

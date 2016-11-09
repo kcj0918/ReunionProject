@@ -29,3 +29,9 @@ build/Release
 # https://docs.npmjs.com/cli/shrinkwrap#caveats
 # Debug log from npm
 npm-debug.log
+
+#node_module
+node_modules*
+
+#idea
+.idea*
