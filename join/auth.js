@@ -28,7 +28,7 @@ var validateJwt = require('express-jwt')({secret: SECRET});
 /*해당 비밀 번호의 User 정보를 가져오는 부분*/
 function UserAuth(login_id,callback){
   pool.getConnection(function(err,connection){
-    connection.query("SELECT id,login_id,password FROM user where login_id=?",login_id,function(err, row){
+    connection.query("select id,login_id,password from user where login_id=?",login_id,function(err, row){
 
 
       callback(row[0]);
