@@ -21,7 +21,7 @@ var pool=require('../../join/connection');
 
 var user={};
 
-user.FindOne = function(id,callback){
+user.FindOne = function(id,category_id,callback){
  pool.getConnection(function(err,connection){
    connection.query("select * from user where id=?",[id],function(err, row){
       /* query의 결과가 배열 형태로 오게 되는데
@@ -48,7 +48,21 @@ user.firstLogin = function(id,callback){
             }
         });
     });
+};
+
+//패스워드 업데이트 쿼리
+user.passwordUpdate = function(id,password,callback){
+    pool.getConnection(function(err,connection){
+        connection.query("update user set password =? where id = ?",[password,id],function(err, row){
+            connection.release();
+            //패스워드 업데이트 실패
+            if(err){
+                callback(err);
+            } else{
+                //패스워드 업데이트 성공
+                callback("true")
+            }
+        });
+    });
 }
-
-
 module.exports = user;

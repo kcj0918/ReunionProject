@@ -26,9 +26,8 @@ passport.use(new LocalStrategy({
     passReqToCallback: true
 }, function (req, login_id, password, done) {
     /*해당 data를 form으로 부터 정상적으로 받았다면  db에서 User를 조회한다*/
-    auth.UserAuth(login_id, function (user) {
+    auth.UserAuth(login_id,req.params.category, function (user) {
         if (!user) {
-
             return done(null, false, req.flash('error', 'ID가 존재하지 않습니다.'));
         }
         if (user.password !== password) {
@@ -44,15 +43,14 @@ passport.use(new LocalStrategy({
 /*로그인이 정상적으로 성공하면 serialize메소드가 실행되고 그 결과 done 메소드는 deserialize로 넘어간다*/
 passport.serializeUser(function (user, done) {
     console.log('serialize');
-    done(null, user.id);
+    done(null, user);
 });
 
 /*deserialize는 session이 있을경우 매 url 요청마다 실행이 되고 파라미터는 serialize의 done 메소드다)*/
-passport.deserializeUser(function (id, done) {
-    console.log('deserialize');
+passport.deserializeUser(function (user, done) {
     /* 처음 연결시에는 User정보를 다 가져오는 것보다 인증만 하고 필요한 User 정보는
      deserialize호출시 가져오는 편이 효율적이다*/
-    userDao.FindOne(id, function (result) {
+    userDao.FindOne(user.id,user.category_id, function (result) {
         //result 에는 유저정보가 저장되어있다. 이 정보는 어떤 url 에서도 req.user 로 접근할수 있다. 그래서 필요없는 정보는 없애고 보내준다.
         result.password = "";
         done(null, result);
