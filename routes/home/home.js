@@ -33,7 +33,6 @@ router.post('/login/:category', function (req, res, next) {
 
             //첫번째 로그인인지 확인한다.
             userDao.firstLogin(user.id,function(result){
-                console.error("result is "+result);
 
                 //첫번째 로그인이 아닌경우 main 화면으로 간다.
                 if(result == "true"){
@@ -48,24 +47,39 @@ router.post('/login/:category', function (req, res, next) {
     })(req, res, next);
 });
 
-//첫번째 로그인시
-router.get('/login_first/:login_id',function(req,res,next){
+//첫번째 로그인시 GET : 리스트 가져옴
+router.get('/login_first/:id',function(req,res,next){
 
-    //TODO : 로그인 했는지 확인 하기. 로그인이 되어있는 경우가 아니면 redirect
-    if(passport.deserializeUser(id)){
+    // 로그인한 상태가 아니면 redirect 한다
+    if(!req.isAuthenticated()){
+        console.error("1");
+        res.redirect('/home');
+        return;
     }
+
+    //보안을 위해 유저정보와 현재 로그인한 아이디가 같은지 검사하고 다르면 home으로 리다이렉트한다.
+    if(req.params.id != req.user.id){
+        console.error("2");
+
+        res.redirect('/home');
+        return;
+    }
+
     var msg = req.flash('error');
     res.render('home/login_first',{message:msg});
 });
 
-//비밀번호 변경
-router.post('/login_first/:login_id',function(req,res,next){
+//첫번째 로그인시 POST : 비밀번호 변경
+router.post('/login_first/:id',function(req,res,next){
 
-    console.error("login id is "+req.params.login_id)
+    console.error("id is "+req.params.id)
     //TODO: 비밀번호 변경 실패시 에러메시지 flash로 보내기  (ex. 비밀번호가 생년월일과 같을경우)
     if(req.body.password != req.body.password_confirm){
         req.flash('error', "비밀번호와 비밀번호 확인이 다릅니다");
-        return res.redirect('/home/login_first/'+req.params.login_id)
+        return res.redirect('/home/login_first/'+req.params.id)
+    }else{
+        //TODO: 여기에 비밀번호 변경 쿼리 넣기
+        return res.redirect('/main/');
     }
 });
 
