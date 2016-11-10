@@ -28,3 +28,8 @@ var pool = mysql.createPool({
 
 
 module.exports = pool;
+
+
+// user:'dev2',
+// password:'test123',
+// database:'skhuDB'
