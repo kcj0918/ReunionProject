@@ -2,6 +2,9 @@
 logs
 *.log
 
+#Connection
+connection.js
+
 # Runtime data
 pids
 *.pid
@@ -27,8 +30,8 @@ build/Release
 # Debug log from npm
 npm-debug.log
 
-#db 정보
-connection.js
+#node_module
+node_modules*
 
-#내꺼 메모
-준구할일
+#idea
+.idea*

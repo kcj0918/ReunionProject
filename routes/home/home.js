@@ -5,7 +5,7 @@ var userDao = require('../../query/user/user');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('home/main', {message: req.flash('error')});
+    res.render('home/main');
 });
 /* get 으로 로그인 페이지에 들어온경우*/
 router.get('/login/:category', function (req, res, next) {
@@ -40,7 +40,7 @@ router.post('/login/:category', function (req, res, next) {
                 } else {
                     //첫번째 로그인인경우 비밀번호 변경 페이지로 간다.
                     var id = user.id;
-                    return res.redirect('/home/login_first/' + id);
+                    return res.redirect('/home/login_first/' + id+"/"+req.params.category);
                 }
             });
         });
@@ -48,7 +48,7 @@ router.post('/login/:category', function (req, res, next) {
 });
 
 //첫번째 로그인시 GET : 리스트 가져옴
-router.get('/login_first/:id', function (req, res, next) {
+router.get('/login_first/:id/:category', function (req, res, next) {
 
     // 로그인한 상태가 아니면 redirect 한다
     if (!req.isAuthenticated()) {
@@ -66,7 +66,7 @@ router.get('/login_first/:id', function (req, res, next) {
 });
 
 //첫번째 로그인시 POST : 비밀번호 변경
-router.post('/login_first/:id', function (req, res, next) {
+router.post('/login_first/:id/:category', function (req, res, next) {
 
     //비밀번호와 비밀번호 체크가 다른경우
     if (req.body.password != req.body.password_confirm) {
@@ -82,7 +82,7 @@ router.post('/login_first/:id', function (req, res, next) {
         //패스워드 변경 성공
         if(result == "true"){
             req.flash('error', "비밀번호 변경에 성공하였습니다. 다시 로그인 해주세요. ");
-            return res.redirect('/home');
+            return res.redirect('/home/login/'+req.params.category);
         }else{
             //패스워드 변경 실패
             req.flash('error', "다시 시도해주세요.");
